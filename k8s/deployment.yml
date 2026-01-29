@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-practice
+  labels:
+    app: devops-practice
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: devops-practice
+  template:
+    metadata:
+      labels:
+        app: devops-practice
+    spec:
+      containers:
+      - name: devops-practice
+        image: bradtech360/devops-practice:7419c40
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
