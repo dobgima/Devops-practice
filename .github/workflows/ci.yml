@@ -1,0 +1,24 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set short SHA
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build image
+        run: docker build -t bradtech360/devops-practice:${{ env.SHORT_SHA }} .
+
+      - name: Push image to DockerHub
+        run: docker push bradtech360/devops-practice:${{ env.SHORT_SHA }}
